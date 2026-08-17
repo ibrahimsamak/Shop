@@ -1,0 +1,15 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.shell-body {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.shell-drawer {
+  width: 240px;
+  border-right: 1px solid var(--mat-sys-outline-variant);
+}

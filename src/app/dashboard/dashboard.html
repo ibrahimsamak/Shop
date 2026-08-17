@@ -1,0 +1,18 @@
+<div class="shell">
+  <app-navbar (menuToggle)="toggle()" (logout)="logout()" />
+
+  <mat-sidenav-container class="shell-body" autosize>
+    <mat-sidenav
+      class="shell-drawer"
+      mode="side"
+      [opened]="opened()"
+      disableClose
+    >
+      <app-sidebar />
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <app-main />
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

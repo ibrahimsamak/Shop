@@ -1,0 +1,33 @@
+<div class="users-page">
+  <header class="toolbar">
+    <mat-form-field appearance="outline" class="search" subscriptSizing="dynamic">
+      <mat-label>Search users</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input
+        matInput
+        [value]="store.searchTerm()"
+        (input)="store.search($any($event.target).value)"
+        placeholder="Filter by name…"
+      />
+      @if (store.searchTerm()) {
+        <button matSuffix mat-icon-button aria-label="Clear search" (click)="store.search('')">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+
+    <span class="count">Active {{ store.activeCount() }} / {{ store.users().length }}</span>
+  </header>
+
+  <div class="grid">
+    @for (u of store.filteredUsers(); track u.id) {
+      <app-user-card [user]="u" (select)="store.select($event)" />
+    } @empty {
+      <p class="empty">No users match your search.</p>
+    }
+  </div>
+
+  @if (store.selectedUser(); as sel) {
+    <p class="selected">Selected: <strong>{{ sel.name }}</strong></p>
+  }
+</div>

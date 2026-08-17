@@ -1,0 +1,40 @@
+<mat-card class="settings-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Settings</mat-card-title>
+    <mat-card-subtitle>Update your profile</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="settings-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" placeholder="Jane Doe" />
+        @if (form.controls.name.hasError('required')) {
+          <mat-error>Name is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="jane@shop.io" />
+        <mat-icon matSuffix>mail</mat-icon>
+        @if (form.controls.email.hasError('required')) {
+          <mat-error>Email is required</mat-error>
+        } @else if (form.controls.email.hasError('email')) {
+          <mat-error>Enter a valid email address</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-checkbox formControlName="active">Account active</mat-checkbox>
+
+      <div class="actions">
+        <button mat-button type="button" [disabled]="!form.dirty" (click)="form.reset()">
+          Reset
+        </button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">
+          Save
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

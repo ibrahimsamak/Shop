@@ -1,0 +1,23 @@
+.user-card {
+  transition: box-shadow 0.2s ease;
+}
+
+.user-card:hover {
+  box-shadow: var(--mat-sys-level2, 0 2px 8px rgba(0, 0, 0, 0.15));
+}
+
+.user-card.inactive {
+  opacity: 0.6;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--mat-sys-primary) 15%, transparent);
+  color: var(--mat-sys-primary);
+}
+
+mat-chip-set {
+  margin-top: 0.25rem;
+}
