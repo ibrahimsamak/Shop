@@ -1,0 +1,10 @@
+.sidebar {
+  padding-top: 0.5rem;
+}
+
+.active-link {
+  --mat-list-list-item-label-text-color: var(--mat-sys-primary);
+  --mat-list-list-item-leading-icon-color: var(--mat-sys-primary);
+  background: color-mix(in srgb, var(--mat-sys-primary) 12%, transparent);
+  font-weight: 600;
+}
