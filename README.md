@@ -1,59 +1,30 @@
-# Ecommerce
+# Tol-Shop Admin
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.21.
+Angular 21 admin panel for my shop: users, products, orders and a small dashboard. The backend (FastAPI) is on the [`master`](https://github.com/ibrahimsamak/Tol-Shop/tree/master) branch.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- Login with access + refresh tokens. The access token is only kept in memory. On a 401 the interceptor refreshes once and retries, and if several requests fail at the same time they all wait for the same refresh.
+- 3 roles (admin, manager, viewer). Route guards for the pages and a `*appHasRole` directive to hide buttons.
+- Lists with search and paging. The big lists use virtual scroll.
+- Product image upload with preview.
+- Dashboard with KPI cards and a revenue chart. The chart is plain SVG, no chart library, and it's loaded with `@defer`.
 
-```bash
-ng serve
-```
+Tech: standalone components, signals for state (no NgRx), zoneless with OnPush, lazy loaded routes, Angular Material 3, SSR.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Each feature has a component, a facade that holds the signals (data, loading, error) and an api service for the http calls.
 
-## Code scaffolding
+## Run
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Node 20+, and the backend running on port 8000.
 
 ```bash
-ng generate --help
+npm install
+npm start
 ```
 
-## Building
+Open http://localhost:4200 and log in with admin@shop.io / admin123 (also manager@shop.io / manager123 and viewer@shop.io / viewer123, the menu changes with the role).
 
-To build the project run:
+`/api` and `/static` are proxied to localhost:8000 in dev (`proxy.conf.json`), so there are no CORS issues.
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Other scripts: `npm run build`, `npm test`, `npm run serve:ssr:ecommerce`.
