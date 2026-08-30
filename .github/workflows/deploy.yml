@@ -1,0 +1,44 @@
+name: deploy-frontend
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPO: 232170401268.dkr.ecr.us-east-1.amazonaws.com/angular-web
+  CLUSTER: app-cluster
+  SERVICE: angular-svc
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::232170401268:role/github-actions-deploy
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & push image
+        run: |
+          docker build --platform linux/amd64 \
+            -t $ECR_REPO:latest -t $ECR_REPO:${{ github.sha }} .
+          docker push $ECR_REPO:latest
+          docker push $ECR_REPO:${{ github.sha }}
+
+      - name: Deploy to ECS (rolling)
+        run: |
+          aws ecs update-service --cluster $CLUSTER --service $SERVICE \
+            --force-new-deployment
+          aws ecs wait services-stable --cluster $CLUSTER --services $SERVICE
