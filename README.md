@@ -62,3 +62,14 @@ All under `/api`. Everything except login/refresh/logout/health needs a token.
 - `dashboard/summary`: revenue, counts and revenue per month for the chart
 
 Passwords are hashed with PBKDF2 from hashlib, I didn't want another dependency just for that.
+
+## Deploy
+
+It runs on AWS: ECS Fargate for the api, RDS Postgres, S3 for product images.
+
+- Pushing to `master` runs `.github/workflows/deploy.yml`, which builds the image, pushes it to ECR and updates the ECS service.
+- For Postgres set `DATABASE_URL=postgresql+asyncpg://...`.
+- For images set `S3_BUCKET`. The bucket is private, so the api returns presigned urls. If `S3_BUCKET` is empty, images are saved to `uploads/` locally.
+- No AWS keys in the code. Locally boto3 uses `aws configure`, and on ECS it uses the task role.
+
+Tables are still created on startup (`create_all`). I should move that to alembic migrations at some point.
