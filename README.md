@@ -28,3 +28,7 @@ Open http://localhost:4200 and log in with admin@shop.io / admin123 (also manage
 `/api` and `/static` are proxied to localhost:8000 in dev (`proxy.conf.json`), so there are no CORS issues.
 
 Other scripts: `npm run build`, `npm test`, `npm run serve:ssr:ecommerce`.
+
+## Deploy
+
+Deployed on ECS Fargate next to the api. The Docker image builds the app and serves `dist/ecommerce/browser` with a small node static server (`static-server.mjs`). I tried nginx and SSR first, but nginx wasn't reachable on Fargate and SSR rendering kept hanging, so for now it's served as a plain SPA. `/api` is routed to the backend service.
